@@ -12,6 +12,7 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 moviepy==1.0.3
 numpy==1.19.5
+pexels-api==1.0.1
 Pillow==8.1.0
 proglog==0.1.9
 requests==2.25.1
