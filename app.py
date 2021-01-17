@@ -6,14 +6,7 @@ import requests
 from pathlib import Path
 from pexels_api import API
 
-
-
 app = Flask(__name__)
-
-
-print(dir)
-#print(app.config("DOWNLOAD_DIR"))
-#print(app.config)
 
 #custom functions
 def dl_img (url, filename):
