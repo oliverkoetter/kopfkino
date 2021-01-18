@@ -5,6 +5,7 @@ import datetime
 import requests
 from pathlib import Path
 from pexels_api import API
+import pyttsx3
 
 app = Flask(__name__)
 
@@ -157,7 +158,7 @@ def create(data):
 
 
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run(debug=True, threaded=True)
 
 
 
