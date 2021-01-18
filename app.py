@@ -5,7 +5,7 @@ import datetime
 import requests
 from pathlib import Path
 from pexels_api import API
-import pyttsx3
+#import pyttsx3
 
 app = Flask(__name__)
 
