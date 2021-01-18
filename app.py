@@ -143,9 +143,10 @@ def upload(filename):
 def create(data):
     input = data
     print("received via GET request: ", data)
+    print(data)
     i = 1
 #    try:
-    api.search(search_words[i], page=1, results_per_page=2)
+    api.search(data, page=1, results_per_page=2)
     ph = api.get_entries()
     print(ph)
     dl_img(ph[0].large, os.path.join(OUTPUT, str(FILENAME + ".jpg")))
