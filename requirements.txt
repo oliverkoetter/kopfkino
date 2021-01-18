@@ -17,7 +17,6 @@ numpy==1.19.5
 pexels-api==1.0.1
 Pillow==8.1.0
 proglog==0.1.9
-pyobjc==7.1
 pyttsx3==2.90
 regex==2020.11.13
 requests==2.25.1
