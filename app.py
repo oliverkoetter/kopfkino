@@ -122,7 +122,7 @@ def hello_world():
 #TESTING
 @app.route('/dl/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-	return send_from_directory(directory=OUTPUT, filename=filename, as_attachment=True)
+	return send_from_directory(directory=os.path.join(BASE_DIR, "downloads"), filename=filename, as_attachment=True)
 
 @app.route('/up/<filename>', methods=['POST'])
 def upload(filename):
