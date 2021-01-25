@@ -25,6 +25,7 @@ class Processing:
         self.text_searchwords = []
         self.downloaded_items = []
         self.footage = []
+        self.footage_and_text = []
         print(self.footage)
         self.timing = [2 for i in range(10)]
         print(self.timing)
@@ -72,8 +73,7 @@ def resize_to_ouput_size(f):
     return f
 
 
-'''
-def overlayText(text, t):
+def overlay_text(text, t):
     overlay = TextClip(text,
                        size=(WIDTH_OUT, HEIGHT_OUT),
                        color=FONT_COLOUR,
@@ -85,7 +85,7 @@ def overlayText(text, t):
     overlay = overlay.set_duration(t)
     return overlay
 
-
+'''
 def overlayAttribution(text, t):
     attribution = TextClip(text,
                            size=(WIDTH_OUT, FONTSIZE_SUB),
@@ -182,13 +182,22 @@ def upload(filename):
 @app.route('/create/<string:data>', methods=['GET'])
 def create(data):
     # creating instance of class Processing which bundles all data and pipeline phases
-    file = Processing(["tree", "cat", "dog", "house", "car"], style="neutral", voiceover=False)
-    file.text_searchwords = file.user_input # will be taking formdata
-    
+#    file = Processing(["tree", "cat", "dog", "house", "car"], style="neutral", voiceover=False)
+#    file.text_searchwords = file.user_input # will be taking formdata
+    file = Processing(user_input=data, style="neutral", voiceover=False)
+    file.text_searchwords = search_words  # input NLP here
+    print(file.user_input)
+    print(file.text_searchwords)
+
     file.downloaded_items = pexels_fetch(file.text_searchwords)
     for i in range(0, len(file.downloaded_items)):
         file.footage.append(zoom(file.downloaded_items[i], file.timing[i]))
-    file.export_file = concatenate(file.footage)
+    for i in range(0, len(file.downloaded_items)):
+        clip = overlay_text(file.text_searchwords[i], file.timing[i])
+        combined = CompositeVideoClip([file.footage[i], clip])
+        file.footage_and_text.append(combined)
+
+    file.export_file = concatenate(file.footage_and_text)
     file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', fps=24)
 
     return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True)
@@ -299,7 +308,7 @@ overlays = []
 combined = []
 i = 0
 for ins in search_sentence_chopped:
-    a = overlayText(ins, timing[i])
+    a = overlay_text(ins, timing[i])
     b = overlayAttribution(watermark, timing[i])
     c = CompositeVideoClip([footage[i], a.crossfadein(1), b])
     combined.append(c)
