@@ -114,10 +114,10 @@ PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
 search_words = [
-    "stone",
-    "town",
-    "car",
-    "sea",
+    "rock",
+    "village",
+    "cat",
+    "ocean",
     "flower"
 ]
 
