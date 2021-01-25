@@ -115,11 +115,17 @@ PADDING = WIDTH_OUT * 0.1
 readingSpeed = 0.2
 search_words = [
     "rock",
+    "village"
+]
+'''
+search_words = [
+    "rock",
     "village",
     "cat",
     "ocean",
     "flower"
 ]
+'''
 
 suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
 ABS_PATH = os.path.abspath(__file__)  # "/app.py"
