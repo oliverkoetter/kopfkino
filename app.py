@@ -174,16 +174,15 @@ def download(filename):
 @app.route('/up/<filename>', methods=['POST'])
 def upload(filename):
     """Upload a file to normal directory"""
-
     if "/" in filename:
         # Return 400 BAD REQUEST
         abort(400, "no subdirectories allowed")
 
-        with open(os.path.join(INPUT, os.path.join(OUTPUT, FILENAME)), "wb") as fp:
+    with open(os.path.join(INPUT, filename), "wb") as fp:
             fp.write(request.data)
 
-        # Return 201 CREATED
-        return "", 201
+    # Return 201 CREATED
+    return "", 201
 
 
 # KOPFKINO ROUTING
