@@ -26,7 +26,7 @@ class Processing:
         self.footage = []
         self.footage_and_text = []
         print(self.footage)
-        self.timing = [2 for i in range(10)]
+        self.timing = [3 for i in range(10)]
         print(self.timing)
 
 
@@ -77,8 +77,8 @@ def overlay_text(text, t):
                        size=(WIDTH_OUT, HEIGHT_OUT),
                        color=FONT_COLOUR,
                        method="caption",
-                       align="center",
-                       fontsize=(FONTSIZE_MAIN),
+                       align="North",
+                       fontsize=(FONTSIZE_MAIN * 5),
 #                       font=FONT
                        )
     overlay = overlay.set_duration(t)
@@ -189,9 +189,11 @@ def upload(filename):
 # KOPFKINO ROUTING
 @app.route('/create/<string:data>', methods=['GET'])
 def create(data):
+    print(data)
     # creating instance of class Processing which bundles all data and pipeline phases
     file = Processing(user_input=data, style="neutral", voiceover=False)
-    file.text_searchwords = search_words  # input NLP here
+#    file.text_searchwords = search_words  # input NLP here
+    file.text_searchwords = [data]
     file.downloaded_items = pexels_fetch(file.text_searchwords)
     for i in range(0, len(file.downloaded_items)):
         file.footage.append(zoom(file.downloaded_items[i], file.timing[i]))
