@@ -114,8 +114,9 @@ PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
 search_words = [
-    "rock",
-    "village"
+    "blues",
+    "city",
+    "monday"
 ]
 '''
 search_words = [
