@@ -45,7 +45,7 @@ def pexels_fetch(to_download):
         api.search(to_download[n], page=1, results_per_page=1)
         dl = api.get_entries()
         print(dl)
-        downloaded_files.append(dl_img(dl[0].large, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))))
+        downloaded_files.append(dl_img(dl[0].medium, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))))
         print(downloaded_files)
         n += 1
     return downloaded_files
@@ -102,8 +102,10 @@ def overlayAttribution(text, t):
 # configurations of paths, output URL, file structure
 # 16:9 ratios possible for upright smartphone usage
 # 540, 960 creates 1/4 data size compared to FullHD
-WIDTH_OUT = 540
-HEIGHT_OUT = 960
+#WIDTH_OUT = 540
+#HEIGHT_OUT = 960
+WIDTH_OUT = 540/2
+HEIGHT_OUT = 960/2
 screensize = (WIDTH_OUT, HEIGHT_OUT)
 
 FONT = "Helvetica-Bold"
