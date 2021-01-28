@@ -140,7 +140,7 @@ Path(os.path.join(BASE_DIR, "downloads", suffix)).mkdir(parents=True, exist_ok=T
 OUTPUT = os.path.join(BASE_DIR, "downloads", suffix)
 
 audio_dir = "static/music/emotional.mp3"
-audio_emotional = AudioFileClip(audio_dir)
+audio_emotional = AudioFileClip(audio_dir, fps=44100)
 
 OUTPUT_NAME = "Kopfkino"
 OUPUT_URL = ""
@@ -206,7 +206,7 @@ def create(data):
 
     file.export_file = concatenate(file.footage_and_text)
     file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
-    file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', fps=24)
+    file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', audio_codec='aac', fps=24)
 
     return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True)
 
