@@ -121,7 +121,7 @@ screensize = (WIDTH_OUT, HEIGHT_OUT)
 FONT = "Helvetica-Bold"
 FONTSIZE_MAIN = WIDTH_OUT * 0.05
 FONTSIZE_SUB = WIDTH_OUT * 0.03
-FONT_COLOUR = "black"
+FONT_COLOUR = "blue"
 PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
@@ -195,7 +195,7 @@ def upload(filename):
             fp.write(request.data)
 
     # Return 201 CREATED
-    return "", 201
+    return f"Die Datei {filename} wurde erstellt!", 201
 
 
 # KOPFKINO ROUTING
