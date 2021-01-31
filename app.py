@@ -220,16 +220,23 @@ def create(data):
 
     return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True)
 
-@app.route("/create/", methods=["GET"])
+@app.route("/create/", methods=["POST"])
 def create_by_header():
-    data = request.headers.get("user_input")
+    print(request.is_json)
+    content = request.get_json()
+    print(content)
+    data = [content.get("user_input")]
+    print(data)
+
     # creating instance of class Processing which bundles all data and pipeline phases
-    file = Processing(user_input=data, style="neutral", voiceover=False)
-    #    file.text_searchwords = search_words  # input NLP here
-    file.text_searchwords = [data]
+    file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
+
+    file.text_searchwords = [content.get("user_input")]
     file.downloaded_items = pexels_fetch(file.text_searchwords)
+
     for i in range(0, len(file.downloaded_items)):
         file.footage.append(zoom(file.downloaded_items[i], file.timing[i]))
+
     for i in range(0, len(file.downloaded_items)):
         clip = overlay_text(file.user_input, file.timing[i])
         combined = CompositeVideoClip([file.footage[i], clip])
