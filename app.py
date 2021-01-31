@@ -5,10 +5,20 @@ import datetime
 import requests
 from pathlib import Path
 from pexels_api import API
+#import tasks
 #from nltk import sent_tokenize, pos_tag
 # import pyttsx3
 
+from decouple import config
+#from dotenv import load_dotenv
+#load_dotenv()
+
+#print(config("PW"))
+print(os.environ)
+print(os.environ.get('REDIS_URL'))
+
 app = Flask(__name__)
+#print(os.environ.get(REDIS_URL))
 
 
 class Processing:
@@ -45,7 +55,7 @@ def pexels_fetch(to_download):
         api.search(to_download[n], page=1, results_per_page=1)
         dl = api.get_entries()
         print(dl)
-        downloaded_files.append(dl_img(dl[0].medium, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))))
+        downloaded_files.append(dl_img(dl[0].large, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))))
         print(downloaded_files)
         n += 1
     return downloaded_files
@@ -207,6 +217,28 @@ def create(data):
     file.export_file = concatenate(file.footage_and_text)
     file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
     file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', audio_codec='aac', fps=24)
+
+    return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True)
+
+@app.route("/create/", methods=["GET"])
+def create_by_header():
+    data = request.headers.get("user_input")
+    # creating instance of class Processing which bundles all data and pipeline phases
+    file = Processing(user_input=data, style="neutral", voiceover=False)
+    #    file.text_searchwords = search_words  # input NLP here
+    file.text_searchwords = [data]
+    file.downloaded_items = pexels_fetch(file.text_searchwords)
+    for i in range(0, len(file.downloaded_items)):
+        file.footage.append(zoom(file.downloaded_items[i], file.timing[i]))
+    for i in range(0, len(file.downloaded_items)):
+        clip = overlay_text(file.user_input, file.timing[i])
+        combined = CompositeVideoClip([file.footage[i], clip])
+        file.footage_and_text.append(combined)
+
+    file.export_file = concatenate(file.footage_and_text)
+    file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
+    file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', audio_codec='aac',
+                                     fps=24)
 
     return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True)
 
