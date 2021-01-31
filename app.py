@@ -121,7 +121,7 @@ screensize = (WIDTH_OUT, HEIGHT_OUT)
 FONT = "Helvetica-Bold"
 FONTSIZE_MAIN = WIDTH_OUT * 0.05
 FONTSIZE_SUB = WIDTH_OUT * 0.03
-FONT_COLOUR = "blue"
+FONT_COLOUR = "green"
 PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
