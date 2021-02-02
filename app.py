@@ -113,7 +113,7 @@ def overlayAttribution(text, t):
 # available flask routes:
 @app.route("/")
 def hello_world():
-    return "Hello Index!"
+    return "Hello IndexMindex!"
 
 
 @app.route('/dl/<path:filename>', methods=['GET', 'POST'])
