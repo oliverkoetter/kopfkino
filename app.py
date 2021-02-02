@@ -5,28 +5,25 @@ import datetime
 import requests
 from pathlib import Path
 from pexels_api import API
-#import tasks
-#from nltk import sent_tokenize, pos_tag
+# import tasks
+from nltk import sent_tokenize, pos_tag
 # import pyttsx3
-
-from decouple import config
-#from dotenv import load_dotenv
-#load_dotenv()
-
-#print(config("PW"))
-print(os.environ)
-print(os.environ.get('REDIS_URL'))
+import redis
+from rq import Queue
+import time
+from tasks import *
+import uuid
 
 app = Flask(__name__)
-#print(os.environ.get(REDIS_URL))
-
+r = redis.Redis()
+q = Queue(connection=r)
 
 class Processing:
     def __init__(self, user_input, style, voiceover):
         self.user_input = user_input
         self.style = style
         self.voiceover = voiceover
-        self.export_filename = "Kopfkino_export_" + str(suffix) + ".mp4"
+        self.export_filename = f"Kopfkino_export_{666}.mp4"
         self.export_file = None
         self.segments = int
         self.text_segmented = []
@@ -36,10 +33,10 @@ class Processing:
         self.footage = []
         self.footage_and_text = []
         print(self.footage)
-        self.timing = [3 for i in range(10)]
+        self.timing = [5 for i in range(10)]
         print(self.timing)
 
-
+'''
 # custom functions
 def dl_img(url, filename):
     print(filename)
@@ -94,7 +91,11 @@ def overlay_text(text, t):
     overlay = overlay.set_duration(t)
     return overlay
 
-'''
+def nlp_pre(user_text):
+    return "hello"
+
+
+
 def overlayAttribution(text, t):
     attribution = TextClip(text,
                            size=(WIDTH_OUT, FONTSIZE_SUB),
@@ -109,76 +110,12 @@ def overlayAttribution(text, t):
     return attribution
 '''
 
-# configurations of paths, output URL, file structure
-# 16:9 ratios possible for upright smartphone usage
-# 540, 960 creates 1/4 data size compared to FullHD
-#WIDTH_OUT = 540
-#HEIGHT_OUT = 960
-WIDTH_OUT = 540/2
-HEIGHT_OUT = 960/2
-screensize = (WIDTH_OUT, HEIGHT_OUT)
-
-FONT = "Helvetica-Bold"
-FONTSIZE_MAIN = WIDTH_OUT * 0.05
-FONTSIZE_SUB = WIDTH_OUT * 0.03
-FONT_COLOUR = "pink"
-PADDING = WIDTH_OUT * 0.1
-
-readingSpeed = 0.2
-search_words = [
-    "blues",
-    "city",
-    "monday"
-]
-'''
-search_words = [
-    "rock",
-    "village",
-    "cat",
-    "ocean",
-    "flower"
-]
-'''
-
-suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-ABS_PATH = os.path.abspath(__file__)  # "/app.py"
-BASE_DIR = os.path.dirname(ABS_PATH)  # "/"
-
-Path(os.path.join(BASE_DIR, "uploads", suffix)).mkdir(parents=True, exist_ok=True)
-INPUT = os.path.join(BASE_DIR, "uploads", suffix)
-Path(os.path.join(BASE_DIR, "downloads", suffix)).mkdir(parents=True, exist_ok=True)
-OUTPUT = os.path.join(BASE_DIR, "downloads", suffix)
-
-audio_dir = "static/music/emotional.mp3"
-audio_emotional = AudioFileClip(audio_dir, fps=44100)
-
-OUTPUT_NAME = "Kopfkino"
-OUPUT_URL = ""
-
-FILENAME = "_".join([OUTPUT_NAME, suffix])  # e.g. 'mylogfile_120508_171442'
-
-# Pexels API setup
-PEXELS_API_KEY = "563492ad6f91700001000001d9cd85bd0c064a838dea391c8a73211c"
-api = API(PEXELS_API_KEY)
-
-# flask setup
-# available routes:
-# /create/<JSON file with following parameters>
-'''
-{
-„user_input“ : „<text, max ### characters>“,
-„style“: „serious or emotional or promo“,
-„VoiceOver“: „<True or False>“
-}
-'''
-
-
+# available flask routes:
 @app.route("/")
 def hello_world():
     return "Hello Index!"
 
 
-# TESTING
 @app.route('/dl/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     return send_from_directory(directory=os.path.join(BASE_DIR, "downloads"), filename=filename, as_attachment=True)
@@ -247,7 +184,21 @@ def create_by_header():
     file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', audio_codec='aac',
                                      fps=24)
 
-    return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True)
+    return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True), 201
+
+@app.route("/redis/", methods=["POST"])
+def background_job_agency():
+    content = request.get_json()
+    id = uuid.uuid1()
+    id = id.int
+    job = q.enqueue(create_kopfkino, content, id)
+
+    return f"kopfkino-app.herokuapp.com/{id}"
+
+@app.route("/<video_id>", methods=["GET"])
+def get_final_video(video_id):
+
+    return send_from_directory(directory=OUTPUT, filename=f"{video_id}.mp4", as_attachment=True)
 
 
 if __name__ == "__main__":
