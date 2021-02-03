@@ -11,7 +11,7 @@ from nltk import sent_tokenize, pos_tag
 import redis
 from rq import Queue
 import time
-from tasks import *
+
 import uuid
 
 app = Flask(__name__)
@@ -36,79 +36,11 @@ class Processing:
         self.timing = [5 for i in range(10)]
         print(self.timing)
 
-'''
-# custom functions
-def dl_img(url, filename):
-    print(filename)
-    r = requests.get(url, allow_redirects=True)
-    open(filename, 'wb').write(r.content)
-    return filename
 
-
-def pexels_fetch(to_download):
-    downloaded_files = []
-    n = 0
-    for i in to_download:
-        api.search(to_download[n], page=1, results_per_page=1)
-        dl = api.get_entries()
-        print(dl)
-        downloaded_files.append(dl_img(dl[0].large, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))))
-        print(downloaded_files)
-        n += 1
-    return downloaded_files
-
-
-def zoom(file, t):
-    f = (ImageClip(file)
-         .resize(height=screensize[1])
-         .resize(lambda t: 1 + 0.02 * t)
-         .set_position(('center', 'center'))
-         .set_duration(t)
-         )
-    f = resize_to_ouput_size(f)
-#    cvc = ImageClip(f, t)
-    return f
-
-
-def resize_to_ouput_size(f):
-    if f.w < WIDTH_OUT:
-        f = f.resize(width=WIDTH_OUT)
-    if f.h < HEIGHT_OUT:
-        f = f.resize(height=HEIGHT_OUT)
-    f = f.crop(x_center=f.w / 2, y_center=f.h / 2, width=WIDTH_OUT, height=HEIGHT_OUT)
-    return f
-
-
-def overlay_text(text, t):
-    overlay = TextClip(text,
-                       size=(WIDTH_OUT, HEIGHT_OUT),
-                       color=FONT_COLOUR,
-                       method="caption",
-                       align="North",
-                       fontsize=(FONTSIZE_MAIN * 5),
-#                       font=FONT
-                       )
-    overlay = overlay.set_duration(t)
-    return overlay
-
-def nlp_pre(user_text):
-    return "hello"
+from tasks import *
 
 
 
-def overlayAttribution(text, t):
-    attribution = TextClip(text,
-                           size=(WIDTH_OUT, FONTSIZE_SUB),
-                           color="white",
-                           fontsize=(FONTSIZE_SUB),
-                           align="center",
-                           method="caption",
-                           font="Helvetica"
-                           )
-    attribution = attribution.set_duration(t)
-    attribution = attribution.set_position((0, 0.95), relative=True)
-    return attribution
-'''
 
 # available flask routes:
 @app.route("/")

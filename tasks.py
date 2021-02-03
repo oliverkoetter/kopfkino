@@ -65,8 +65,8 @@ FILENAME = "_".join([OUTPUT_NAME, suffix])  # e.g. 'mylogfile_120508_171442'
 
 
 
-
-PEXELS_API_KEY = "563492ad6f91700001000001d9cd85bd0c064a838dea391c8a73211c"
+#print(os.getenv("PEXELS_API_KEY"))
+PEXELS_API_KEY = os.getenv("PEXELS_API_KEY")
 api = API(PEXELS_API_KEY)
 
 audio_dir = "static/music/emotional.mp3"
@@ -87,7 +87,11 @@ def pexels_fetch(to_download):
         api.search(to_download[n], page=1, results_per_page=1)
         dl = api.get_entries()
         print(dl)
-        downloaded_files.append(dl_img(dl[0].large, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))))
+        img = [
+            dl_img(dl[0].large, os.path.join(OUTPUT, str("image_downloaded_" + str(n) + ".jpg"))),
+            dl[0].photographer
+               ]
+        downloaded_files.append(img)
         print(downloaded_files)
         n += 1
     return downloaded_files
@@ -114,16 +118,29 @@ def resize_to_ouput_size(f):
     return f
 
 
-def overlay_text(text, t):
-    overlay = TextClip(text,
+def overlay_text(file, t, i):
+    overlay = TextClip(file.text_searchwords[i],
                        size=(WIDTH_OUT, HEIGHT_OUT),
                        color=FONT_COLOUR,
                        method="caption",
                        align="North",
                        fontsize=(FONTSIZE_MAIN * 5),
                        )
-    overlay = overlay.set_duration(t)
-    return overlay
+    combined = CompositeVideoClip([overlay, overlayAttribution(file.downloaded_items[i][1])])
+    combined = combined.set_duration(t)
+    return combined
+
+def overlayAttribution(text):
+    attribution = TextClip(text,
+                           size=(WIDTH_OUT, FONTSIZE_SUB),
+                           color=FONT_COLOUR,
+                           fontsize=(FONTSIZE_SUB),
+                           align="center",
+                           method="caption",
+#                           font="Helvetica"
+                           )
+    attribution = attribution.set_position((0, 0.95), relative=True)
+    return attribution
 
 
 def nlp_pre():
@@ -137,17 +154,15 @@ def redis_testing(n):
 def create_kopfkino(content, id):
     print(id)
     file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
-    file.text_searchwords = [file.user_input]
+    file.text_searchwords = file.user_input
     print(file.user_input)
     file.downloaded_items = pexels_fetch(file.text_searchwords)
     for i in range(0, len(file.downloaded_items)):
-        file.footage.append(zoom(file.downloaded_items[i], file.timing[i]))
+        file.footage.append(zoom(file.downloaded_items[i][0], file.timing[i]))
     for i in range(0, len(file.downloaded_items)):
-        clip = overlay_text(file.text_searchwords[i], file.timing[i])
+        clip = overlay_text(file, file.timing[i], i)
         combined = CompositeVideoClip([file.footage[i], clip])
         file.footage_and_text.append(combined)
-
-    time.sleep(10)
     file.export_file = concatenate(file.footage_and_text)
     file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
     file.export_file.write_videofile(os.path.join(OUTPUT, f"{id}.mp4"), codec='libx264', audio_codec='aac', fps=24)
