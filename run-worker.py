@@ -1,18 +1,13 @@
 import os
-import urllib.parse
-from redis import Redis
-from rq import Queue, Connection
-from rq.worker import HerokuWorker as Worker
+
+import redis
+from rq import Worker, Queue, Connection
 
 listen = ['high', 'default', 'low']
 
-redis_url = os.getenv('REDISTOGO_URL')
-if not redis_url:
-    raise RuntimeError('Set up Redis To Go first.')
+redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 
-urllib.parse.uses_netloc.append('redis')
-url = urllib.parse.urlparse(redis_url)
-conn = Redis(host=url.hostname, port=url.port, db=0, password=url.password)
+conn = redis.from_url(redis_url)
 
 if __name__ == '__main__':
     with Connection(conn):

@@ -132,6 +132,14 @@ def get_final_video(video_id):
 
     return send_from_directory(directory=OUTPUT, filename=f"{video_id}.mp4", as_attachment=True)
 
+@app.route("/testing/<int:n>", methods=["GET"])
+def redis_queue_test(n):
+    print("job wird gestartet")
+    job = q.enqueue(addOne, n)
+    print(job.id)
+    print(job.enqueued_at)
+    time.sleep(5)
+    return f"Der folgende Job ist in die Queue gekommen{job.id}, \n Status ist: {job.get_status()}!"
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)

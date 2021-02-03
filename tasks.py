@@ -72,6 +72,8 @@ api = API(PEXELS_API_KEY)
 audio_dir = "static/music/emotional.mp3"
 audio_emotional = AudioFileClip(audio_dir, fps=44100)
 
+def addOne(n):
+    return n + 1
 
 def dl_img(url, filename):
     print(filename)
