@@ -122,4 +122,4 @@ def redis_queue_test(n):
     return f"Der folgende Job ist in die Queue gekommen{job.id}, \n Status ist: {job.get_status()}!"
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True)
+    app.run(threaded=True)
