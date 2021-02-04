@@ -1,3 +1,4 @@
+'''
 import os
 from urllib.parse import urlparse
 from redis import Redis
@@ -23,7 +24,9 @@ if __name__ == '__main__':
 print(f"Meldung aus run-worker.py: {os.getenv('FLASK_ENV')}")
 print(f"Meldung aus run-worker.py: {os.getenv('REDISTOGO_URL')}")
 
-'''import os
+'''
+
+import os
 
 import redis
 from rq import Worker, Queue, Connection
@@ -41,4 +44,3 @@ if __name__ == '__main__':
     with Connection(conn):
         worker = Worker(map(Queue, listen))
         worker.work()
-'''

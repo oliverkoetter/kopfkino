@@ -15,7 +15,7 @@ import time
 import uuid
 
 app = Flask(__name__)
-r = redis.Redis()
+r = redis.from_url("redis://redistogo:3f1232c25d4635ab5422d0cced370d16@soapfish.redistogo.com:10834/")
 q = Queue(connection=r)
 
 class Processing:
