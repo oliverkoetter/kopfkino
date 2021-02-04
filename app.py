@@ -18,7 +18,8 @@ import uuid
 app = Flask(__name__)
 # r = redis.from_url(os.getenv('REDISTOGO_URL'))
 #print(os.environ.get("REDIS_URL"))
-r = redis.from_url("redis://:paa343e8d9ef099f17ab77c8fdccc3cfb1a78757c3aee21e13a28426e3acd81d5@ec2-108-128-33-61.eu-west-1.compute.amazonaws.com:29739")
+#r = redis.from_url("redis://:paa343e8d9ef099f17ab77c8fdccc3cfb1a78757c3aee21e13a28426e3acd81d5@ec2-108-128-33-61.eu-west-1.compute.amazonaws.com:29739")
+r = (os.environ.get("REDIS_URL"))
 #r = redis.Redis()
 q = Queue(connection=r)
 
@@ -119,11 +120,13 @@ def background_job_agency():
 
 @app.route("/<video_id>", methods=["GET"])
 def get_final_video(video_id):
-    print(q.finished_job_registry)
     yes = None
     if video_id in q.finished_job_registry:
         yes = True
-    return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}"
+    job = q.finished_job_registry.fetch(video_id, connection=r)
+    print(job)
+    print(job.result)
+    return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}. Dies ist der Wert des fertigen Jobs: {job.result}"
     #return send_from_directory(directory=OUTPUT, filename=f"{video_id}.mp4", as_attachment=True)
 
 @app.route("/testing/<int:n>", methods=["GET"])
