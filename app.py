@@ -18,7 +18,11 @@ import uuid
 app = Flask(__name__)
 # r = redis.from_url(os.getenv('REDISTOGO_URL'))
 #print(os.environ.get("REDIS_URL"))
-r = redis.from_url("redis://:paa343e8d9ef099f17ab77c8fdccc3cfb1a78757c3aee21e13a28426e3acd81d5@ec2-108-128-33-61.eu-west-1.compute.amazonaws.com:29739")
+#r = redis.from_url("redis://:paa343e8d9ef099f17ab77c8fdccc3cfb1a78757c3aee21e13a28426e3acd81d5@ec2-108-128-33-61.eu-west-1.compute.amazonaws.com:29739")
+redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
+print(f"Redis URL geprintet von app.py{redis_url}")
+r = redis.from_url(redis_url)
+
 #r = (os.environ.get("REDIS_URL"))
 #r = redis.Redis()
 q = Queue(connection=r)
@@ -120,14 +124,16 @@ def background_job_agency():
 
 @app.route("/<video_id>", methods=["GET"])
 def get_final_video(video_id):
-    yes = None
-    if video_id in q.finished_job_registry:
-        yes = True
     job = q.fetch_job(video_id)
-    print(job)
-    print(job.result)
-    return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}. Dies ist der Wert des fertigen Jobs: {job.result}"
-    #return send_from_directory(directory=OUTPUT, filename=f"{video_id}.mp4", as_attachment=True)
+
+   # with open(f"kopfkinoexport_job_{job.id}.mp4", "wb") as ex:
+   #     ex.write(job.result)
+    binary_file = open(f"kopfkino_export_job.mp4", "wb")
+    binary_file.write(job.result)
+    binary_file.close()
+
+    #return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}. Dies ist der Wert des fertigen Jobs: {job.result}"
+    return send_from_directory(directory=os.path.dirname(os.path.realpath(__file__)), filename=f"kopfkino_export_job.mp4", as_attachment=True)
 
 @app.route("/testing/<int:n>", methods=["GET"])
 def redis_queue_test(n):

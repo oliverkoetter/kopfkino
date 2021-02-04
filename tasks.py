@@ -147,4 +147,7 @@ def create_kopfkino(content, id):
     file.export_file = concatenate(file.footage_and_text)
     file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
     file.export_file.write_videofile(os.path.join(OUTPUT, f"{id}.mp4"), codec='libx264', audio_codec='aac', fps=24)
-    return f"Heeeeeelloooooo hier sollte die Datei sein!"
+    with open(os.path.join(OUTPUT, f"{id}.mp4"), "rb") as trans:
+        result = trans.read()
+    #return f"Heeeeeelloooooo hier sollte die Datei sein!"
+    return result
