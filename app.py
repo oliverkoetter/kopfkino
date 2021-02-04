@@ -123,7 +123,7 @@ def get_final_video(video_id):
     yes = None
     if video_id in q.finished_job_registry:
         yes = True
-    job = q.fetch_job(video_id, connection=r)
+    job = q.fetch_job(video_id)
     print(job)
     print(job.result)
     return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}. Dies ist der Wert des fertigen Jobs: {job.result}"
