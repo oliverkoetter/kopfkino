@@ -14,9 +14,18 @@ import time
 
 import uuid
 
+
 app = Flask(__name__)
-r = redis.from_url("redis://redistogo:3f1232c25d4635ab5422d0cced370d16@soapfish.redistogo.com:10834/")
+# r = redis.from_url(os.getenv('REDISTOGO_URL'))
+#r = redis.Redis('redis://redistogo:3f1232c25d4635ab5422d0cced370d16@soapfish.redistogo.com:10834/')
+r = redis.Redis()
 q = Queue(connection=r)
+
+'''
+print(app.config('FLASK_ENV'))
+print(os.getenv('PEXELS_API_KEY'))
+print(os.getenv('REDISTOGO_URL'))
+'''
 
 class Processing:
     def __init__(self, user_input, style, voiceover):
@@ -37,8 +46,8 @@ class Processing:
         print(self.timing)
 
 
-from tasks import *
 
+from tasks import *
 
 
 

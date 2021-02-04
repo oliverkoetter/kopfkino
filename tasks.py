@@ -1,19 +1,18 @@
+import os
+import requests
+
+from app import Processing
+
 from moviepy.editor import *
 from pexels_api import API
-import requests
-from app import Processing
-import os
-import datetime
 from pathlib import Path
 import time
-
+import datetime
 
 
 # configurations of paths, output URL, file structure
 # 16:9 ratios possible for upright smartphone usage
 # 540, 960 creates 1/4 data size compared to FullHD
-#WIDTH_OUT = 540
-#HEIGHT_OUT = 960
 WIDTH_OUT = 540/2
 HEIGHT_OUT = 960/2
 screensize = (WIDTH_OUT, HEIGHT_OUT)
@@ -25,11 +24,7 @@ FONT_COLOUR = "pink"
 PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
-search_words = [
-    "blues",
-    "city",
-    "monday"
-]
+
 source = ["A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so.",
             "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by a",
             "The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.",
@@ -53,24 +48,16 @@ Path(os.path.join(BASE_DIR, "downloads", suffix)).mkdir(parents=True, exist_ok=T
 #OUTPUT = os.path.join(BASE_DIR, "downloads", suffix)
 OUTPUT = os.path.join(BASE_DIR, "downloads")
 
-
-
 OUTPUT_NAME = "Kopfkino"
-OUPUT_URL = ""
-
-FILENAME = "_".join([OUTPUT_NAME, suffix])  # e.g. 'mylogfile_120508_171442'
-
-
-
-
-
-
-#print(os.getenv("PEXELS_API_KEY"))
-PEXELS_API_KEY = os.getenv("PEXELS_API_KEY")
-api = API(PEXELS_API_KEY)
 
 audio_dir = "static/music/emotional.mp3"
 audio_emotional = AudioFileClip(audio_dir, fps=44100)
+
+
+# API setups
+PEXELS_API_KEY = os.getenv("PEXELS_API_KEY")
+api = API(PEXELS_API_KEY)
+
 
 def addOne(n):
     return n + 1
@@ -143,14 +130,6 @@ def overlayAttribution(text):
                            )
     attribution = attribution.set_position((0, 0.95), relative=True)
     return attribution
-
-
-def nlp_pre():
-    return "hello"
-
-
-def redis_testing(n):
-    return 10 * n
 
 
 def create_kopfkino(content, id):
