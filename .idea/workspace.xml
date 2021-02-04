@@ -30,7 +30,6 @@
     <list default="true" id="5d91b5af-d31f-47ab-a7b0-e980c18932e3" name="Default Changelist" comment="RQ fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run-worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-worker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,7 +60,14 @@
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+      </console-settings>
+    </option>
   </component>
   <component name="RunManager" selected="Python.app">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -253,9 +259,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="RQ fixes" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="580" y="405" width="920" height="547" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612036281055">
-      <screen x="0" y="25" width="2560" height="1415" />
+    <state x="406" y="301" width="699" height="520" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612482281197">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state x="406" y="301" width="699" height="520" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1612482281197" />
     <state x="521" y="308" width="920" height="547" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1792.1095@0.25.1792.1095" timestamp="1610905238812" />
     <state x="744" y="391" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.2560.1415/-1792.285.1792.1095@0.25.2560.1415" timestamp="1610846537546" />
     <state x="580" y="405" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.2560.1415/2560.279.1792.1095@0.25.2560.1415" timestamp="1612036281055" />
@@ -311,9 +318,10 @@
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state width="1457" height="498" key="GridCell.Tab.1.right/0.25.2560.1415/2560.279.1792.1095@0.25.2560.1415" timestamp="1612037736670" />
-    <state x="788" y="338" key="SettingsEditor" timestamp="1612036299519">
-      <screen x="0" y="25" width="2560" height="1415" />
+    <state x="552" y="248" key="SettingsEditor" timestamp="1612482417413">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state x="552" y="248" key="SettingsEditor/0.0.1792.1120@0.0.1792.1120" timestamp="1612482417413" />
     <state x="473" y="232" key="SettingsEditor/0.25.1536.935@0.25.1536.935" timestamp="1611578208003" />
     <state x="552" y="290" key="SettingsEditor/0.25.1792.1095@0.25.1792.1095" timestamp="1610905374020" />
     <state x="789" y="368" key="SettingsEditor/0.25.2560.1415/-1792.285.1792.1095@0.25.2560.1415" timestamp="1610846573125" />

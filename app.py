@@ -144,5 +144,15 @@ def redis_queue_test(n):
     time.sleep(5)
     return f"Der folgende Job ist in die Queue gekommen{job.id}, \n Status ist: {job.get_status()}!"
 
+
+@app.route("/nlp/", methods=["GET"])
+def nlp_test():
+    content = request.get_json()
+    job = q.enqueue(nlp_process, str(content.get("user_input")))
+    while job.id not in q.finished_job_registry:
+        time.sleep(1)
+    return f"{job.result}"
+    
+
 if __name__ == "__main__":
     app.run(threaded=True)

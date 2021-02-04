@@ -2,6 +2,8 @@ import os
 import requests
 
 from app import Processing
+#from nltk import sent_tokenize, pos_tag
+import nltk
 
 from moviepy.editor import *
 from pexels_api import API
@@ -151,3 +153,11 @@ def create_kopfkino(content, id):
         result = trans.read()
     #return f"Heeeeeelloooooo hier sollte die Datei sein!"
     return result
+
+
+def nlp_process(text):
+    chopped = nltk.sent_tokenize(text)
+    print(chopped)
+    
+    #return user_input_processed
+    return chopped
