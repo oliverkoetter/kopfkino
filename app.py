@@ -17,8 +17,9 @@ import uuid
 
 app = Flask(__name__)
 # r = redis.from_url(os.getenv('REDISTOGO_URL'))
-#r = redis.Redis('redis://redistogo:3f1232c25d4635ab5422d0cced370d16@soapfish.redistogo.com:10834/')
-r = redis.Redis()
+#print(os.environ.get("REDIS_URL"))
+r = redis.from_url("redis://:paa343e8d9ef099f17ab77c8fdccc3cfb1a78757c3aee21e13a28426e3acd81d5@ec2-108-128-33-61.eu-west-1.compute.amazonaws.com:29739")
+#r = redis.Redis()
 q = Queue(connection=r)
 
 '''
