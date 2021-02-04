@@ -11,14 +11,17 @@ redis_url = "redis://redistogo:3f1232c25d4635ab5422d0cced370d16@soapfish.redisto
 if not redis_url:
     raise RuntimeError('Set up Redis To Go first.')
 
-urlparse.uses_netloc.append('redis')
-url = urlparse.urlparse(redis_url)
+urllib.parse.urlparse.uses_netloc.append('redis')
+url = urllib.parse.urlparse(redis_url)
 conn = Redis(host=url.hostname, port=url.port, db=0, password=url.password)
 
 if __name__ == '__main__':
     with Connection(conn):
         worker = Worker(map(Queue, listen))
         worker.work()
+
+print(f"Meldung aus run-worker.py: {os.getenv('FLASK_ENV')}")
+print(f"Meldung aus run-worker.py: {os.getenv('REDISTOGO_URL')}")
 
 '''import os
 
