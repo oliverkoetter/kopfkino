@@ -112,15 +112,19 @@ def create_by_header():
 def background_job_agency():
     content = request.get_json()
     id = uuid.uuid1()
-    id = id.int
+    id = "hallo dies ist einfach ein random name"
     job = q.enqueue(create_kopfkino, content, id)
 
-    return f"kopfkino-app.herokuapp.com/{id}"
+    return f"kopfkino-app.herokuapp.com/{job.id}"
 
 @app.route("/<video_id>", methods=["GET"])
 def get_final_video(video_id):
-
-    return send_from_directory(directory=OUTPUT, filename=f"{video_id}.mp4", as_attachment=True)
+    print(q.finished_job_registry)
+    yes = None
+    if video_id in q.finished_job_registry:
+        yes = True
+    return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}"
+    #return send_from_directory(directory=OUTPUT, filename=f"{video_id}.mp4", as_attachment=True)
 
 @app.route("/testing/<int:n>", methods=["GET"])
 def redis_queue_test(n):

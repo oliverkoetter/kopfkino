@@ -35,6 +35,7 @@ listen = ['high', 'default', 'low']
 
 #redis_url = os.getenv('REDISTOGO_URL')
 redis_url = "redis://:paa343e8d9ef099f17ab77c8fdccc3cfb1a78757c3aee21e13a28426e3acd81d5@ec2-108-128-33-61.eu-west-1.compute.amazonaws.com:29739"
+print(redis_url)
 #print(os.getenv("REDISTOGO_URL"))
 print(f"set Redis worker instance to {os.getenv('REDISTOGO_URL')}")
 
