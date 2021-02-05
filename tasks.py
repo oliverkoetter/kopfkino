@@ -176,6 +176,12 @@ def nlp_testing_2(file):
             n +=1
         n = round(n * readingSpeed, 1)
         file.text_timing.append(n)
-    print(file.text_timing)
+        text_segmented_to_words = nltk.word_tokenize(file.text_segmented[i])
+        print(text_segmented_to_words)
 
-    return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing}"
+        file.text_searchwords.append([])
+        for p in nltk.pos_tag(text_segmented_to_words):
+            if p[1] == ("NN" or "NNS" or "NNP" or "NNPS" or "VB" or "JJ"):
+                file.text_searchwords[i].append(p[0])
+
+    return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing} \nsearchwords: {file.text_searchwords}"

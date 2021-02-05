@@ -121,7 +121,7 @@ def background_job_agency():
     id = "Kopfkino_rand_name"
     job = q.enqueue(create_kopfkino, content, id)
 
-    return f"kopfkino-app.herokuapp.com/{job.id}"
+    return f"https://kopfkino-app.herokuapp.com/{job.id}"
 
 @app.route("/<video_id>", methods=["GET"])
 def get_final_video(video_id):
