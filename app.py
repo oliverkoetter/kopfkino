@@ -115,26 +115,21 @@ def create_by_header():
     return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True), 201
 
 @app.route("/redis/", methods=["POST"])
-def background_job_agency():
+def kopfkino_enqueue_job():
     content = request.get_json()
-    id = uuid.uuid1()
-    id = "Kopfkino_rand_name"
-    job = q.enqueue(create_kopfkino, content, id)
+    job = q.enqueue(create_kopfkino, content)
 
-    return f"https://kopfkino-app.herokuapp.com/{job.id}"
+    return f"https://kopfkino-app.herokuapp.com/{job.id}", 201
 
 @app.route("/<video_id>", methods=["GET"])
 def get_final_video(video_id):
     job = q.fetch_job(video_id)
-
-   # with open(f"kopfkinoexport_job_{job.id}.mp4", "wb") as ex:
-   #     ex.write(job.result)
     binary_file = open(f"kopfkino_export_job.mp4", "wb")
     binary_file.write(job.result)
     binary_file.close()
 
     #return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}. Dies ist der Wert des fertigen Jobs: {job.result}"
-    return send_from_directory(directory=os.path.dirname(os.path.realpath(__file__)), filename=f"kopfkino_export_job.mp4", as_attachment=True)
+    return send_from_directory(directory=os.path.dirname(os.path.realpath(__file__)), filename=f"kopfkino_export_job.mp4", as_attachment=True), 200
 
 @app.route("/testing/<int:n>", methods=["GET"])
 def redis_queue_test(n):
@@ -157,7 +152,7 @@ def nlp_2():
     while job.id not in q.finished_job_registry:
         time.sleep(0.1)
         
-    return f"Ergebnis für Funktion nlp_testing_2: {job.result}"
+    return f"Ergebnis für Funktion nlp_testing_2: {job.result}", 201
     
 
 

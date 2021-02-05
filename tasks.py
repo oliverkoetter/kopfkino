@@ -22,7 +22,7 @@ screensize = (WIDTH_OUT, HEIGHT_OUT)
 FONT = "Helvetica-Bold"
 FONTSIZE_MAIN = WIDTH_OUT * 0.05
 FONTSIZE_SUB = WIDTH_OUT * 0.03
-FONT_COLOUR = "pink"
+FONT_COLOUR = "green"
 PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
@@ -74,8 +74,9 @@ def dl_img(url, filename):
 def pexels_fetch(to_download):
     downloaded_files = []
     n = 0
+
     for i in to_download:
-        api.search(to_download[n], page=1, results_per_page=1)
+        api.search(" ".join(i), page=1, results_per_page=1)
         dl = api.get_entries()
         print(dl)
         img = [
@@ -83,7 +84,6 @@ def pexels_fetch(to_download):
             dl[0].photographer
                ]
         downloaded_files.append(img)
-        print(downloaded_files)
         n += 1
     return downloaded_files
 
@@ -109,16 +109,16 @@ def resize_to_ouput_size(f):
     return f
 
 
-def overlay_text(file, t, i):
-    overlay = TextClip(file.text_searchwords[i],
-                       size=(WIDTH_OUT, HEIGHT_OUT),
+def overlay_text(file, i):
+    overlay = TextClip(file.text_segmented[i],
+                       size=(WIDTH_OUT * 0.9, HEIGHT_OUT),
                        color=FONT_COLOUR,
                        method="caption",
-                       align="North",
-                       fontsize=(FONTSIZE_MAIN * 5),
+                       align="center",
+                       fontsize=FONTSIZE_MAIN,
                        )
     combined = CompositeVideoClip([overlay, overlayAttribution(file.downloaded_items[i][1])])
-    combined = combined.set_duration(t)
+    combined = combined.set_duration(file.text_timing[i])
     return combined
 
 def overlayAttribution(text):
@@ -134,27 +134,28 @@ def overlayAttribution(text):
     return attribution
 
 
-def create_kopfkino(content, id):
-    print(id)
+def create_kopfkino(content):
     file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
     nlp_testing_2(file)
     
-    file.text_searchwords = file.text_segmented
-
+    nlp_testing_2(file)
+    print(file.downloaded_items)
+    print(file.text_searchwords)
     file.downloaded_items = pexels_fetch(file.text_searchwords)
     
     for i in range(0, len(file.downloaded_items)):
-        file.footage.append(zoom(file.downloaded_items[i][0], file.timing[i]))
-    for i in range(0, len(file.downloaded_items)):
-        clip = overlay_text(file, file.timing[i], i)
+        file.footage.append(zoom(file.downloaded_items[i][0], file.text_timing[i]))
+    for i in range(0, len(file.text_segmented)):
+        clip = overlay_text(file, i)
         combined = CompositeVideoClip([file.footage[i], clip])
         file.footage_and_text.append(combined)
+
     file.export_file = concatenate(file.footage_and_text)
     file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
-    file.export_file.write_videofile(os.path.join(OUTPUT, f"{id}.mp4"), codec='libx264', audio_codec='aac', fps=24)
-    with open(os.path.join(OUTPUT, f"{id}.mp4"), "rb") as trans:
+    file.export_file.write_videofile(os.path.join(OUTPUT, f"Kopfkino_export_in workerinstance.mp4"), codec='libx264', audio_codec='aac', fps=24)
+    with open(os.path.join(OUTPUT, f"Kopfkino_export_in workerinstance.mp4"), "rb") as trans:
         result = trans.read()
-    #return f"Heeeeeelloooooo hier sollte die Datei sein!"
+
     return result
 
 
@@ -177,11 +178,16 @@ def nlp_testing_2(file):
         n = round(n * readingSpeed, 1)
         file.text_timing.append(n)
         text_segmented_to_words = nltk.word_tokenize(file.text_segmented[i])
-        print(text_segmented_to_words)
-
         file.text_searchwords.append([])
+        print(nltk.pos_tag(text_segmented_to_words))
         for p in nltk.pos_tag(text_segmented_to_words):
-            if p[1] == ("NN" or "NNS" or "NNP" or "NNPS" or "VB" or "JJ"):
+            #{"VBP", "JJ", "NN", "NNS", "NNP", "NNPS", "VB"}
+            if p[1] in { "JJ", "NN", "NNS", "VB"}:
+                print(f"found word {p} and put it to the searchwords")
                 file.text_searchwords[i].append(p[0])
-
+                file
+        for i in file.text_searchwords:
+            if i == []:
+                i.append("error")
+                print("appended error")
     return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing} \nsearchwords: {file.text_searchwords}"
