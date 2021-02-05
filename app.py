@@ -124,12 +124,16 @@ def kopfkino_enqueue_job():
 @app.route("/<video_id>", methods=["GET"])
 def get_final_video(video_id):
     job = q.fetch_job(video_id)
-    binary_file = open(f"kopfkino_export_job.mp4", "wb")
-    binary_file.write(job.result)
-    binary_file.close()
-
-    #return f"Es wurde nach dem Job mit der id {video_id} gesucht. Es wurde in der finished registry gefunden: {yes}. Dies ist der Wert des fertigen Jobs: {job.result}"
-    return send_from_directory(directory=os.path.dirname(os.path.realpath(__file__)), filename=f"kopfkino_export_job.mp4", as_attachment=True), 200
+    try:
+        binary_file = open(f"kopfkino_export_job.mp4", "wb")
+        binary_file.write(job.result)
+        binary_file.close()
+        return send_from_directory(directory=os.path.dirname(os.path.realpath(__file__)), filename=f"kopfkino_export_job.mp4", as_attachment=True), 200
+    except:
+        if job.id in q.failed_job_registry:
+            return "There is a problem with the processing, please try again!", 500
+        else:
+            return 404
 
 @app.route("/testing/<int:n>", methods=["GET"])
 def redis_queue_test(n):
