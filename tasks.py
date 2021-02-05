@@ -137,9 +137,12 @@ def overlayAttribution(text):
 def create_kopfkino(content, id):
     print(id)
     file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
-    file.text_searchwords = file.user_input
-    print(file.user_input)
+    nlp_testing_2(file)
+    
+    file.text_searchwords = file.text_segmented
+
     file.downloaded_items = pexels_fetch(file.text_searchwords)
+    
     for i in range(0, len(file.downloaded_items)):
         file.footage.append(zoom(file.downloaded_items[i][0], file.timing[i]))
     for i in range(0, len(file.downloaded_items)):
@@ -167,5 +170,12 @@ def nlp_testing_2(file):
     text_raw = file.user_input
     print(text_raw)
     file.text_segmented = nltk.sent_tokenize(text_raw)
+    for i in range (0, len(file.text_segmented)):
+        n = 0
+        for c in file.text_segmented[i]:
+            n +=1
+        n = round(n * readingSpeed, 1)
+        file.text_timing.append(n)
+    print(file.text_timing)
 
-    return file.text_segmented
+    return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing}"

@@ -42,13 +42,14 @@ class Processing:
         self.export_file = None
         self.text_segmented = []
         self.text_segmented = []
+        self.text_timing = []
         self.text_overlays = []
         self.text_searchwords = []
         self.downloaded_items = []
         self.footage = []
         self.footage_and_text = []
         print(self.footage)
-        self.timing = [5 for i in range(10)]
+        self.timing = [3 for i in range(10)]
         print(self.timing)
 
 
@@ -117,7 +118,7 @@ def create_by_header():
 def background_job_agency():
     content = request.get_json()
     id = uuid.uuid1()
-    id = "hallo dies ist einfach ein random name"
+    id = "Kopfkino_rand_name"
     job = q.enqueue(create_kopfkino, content, id)
 
     return f"kopfkino-app.herokuapp.com/{job.id}"

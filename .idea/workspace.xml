@@ -30,7 +30,6 @@
     <list default="true" id="5d91b5af-d31f-47ab-a7b0-e980c18932e3" name="Default Changelist" comment="NLTK fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run-worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-worker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -268,6 +267,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="NLTK fixes" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="611" y="401" key="#Notifications" timestamp="1612542595486">
+      <screen x="0" y="25" width="1792" height="1095" />
+    </state>
+    <state x="611" y="401" key="#Notifications/0.25.1792.1095@0.25.1792.1095" timestamp="1612542595486" />
     <state x="406" y="301" width="699" height="520" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612482281197">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
