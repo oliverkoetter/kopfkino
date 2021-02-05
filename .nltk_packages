@@ -1,1 +1,5 @@
-sent_tokenize
+taggers
+stemmers
+tokenizers
+chunkers
+models

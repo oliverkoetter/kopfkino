@@ -3,6 +3,5 @@ venv
 .DS_Store
 __pycache__
 uploads
-.nltk_packages
 downloads
 uploads
