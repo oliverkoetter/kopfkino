@@ -40,7 +40,7 @@ class Processing:
         self.voiceover = voiceover
         self.export_filename = f"Kopfkino_export_{666}.mp4"
         self.export_file = None
-        self.segments = int
+        self.text_segmented = []
         self.text_segmented = []
         self.text_overlays = []
         self.text_searchwords = []
@@ -145,14 +145,20 @@ def redis_queue_test(n):
     return f"Der folgende Job ist in die Queue gekommen{job.id}, \n Status ist: {job.get_status()}!"
 
 
-@app.route("/nlp/", methods=["GET"])
-def nlp_test():
+@app.route("/nlp/", methods=["GET", "POST"])
+def nlp_2():
     content = request.get_json()
-    job = q.enqueue(nlp_process, str(content.get("user_input")))
-    while job.id not in q.finished_job_registry:
-        time.sleep(1)
-    return f"{job.result}"
+    file = Processing(user_input=content.get("user_input"), style=content.get("style"),
+                      voiceover=content.get("voiceover"))
     
+    job = q.enqueue(nlp_testing_2, file)
+    
+    while job.id not in q.finished_job_registry:
+        time.sleep(0.1)
+        
+    return f"Ergebnis für Funktion nlp_testing_2: {job.result}"
+    
+
 
 if __name__ == "__main__":
     app.run(threaded=True)

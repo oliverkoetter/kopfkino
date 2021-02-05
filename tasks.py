@@ -155,9 +155,17 @@ def create_kopfkino(content, id):
     return result
 
 
-def nlp_process(text):
+def nlp_testing(text):
     chopped = nltk.sent_tokenize(text)
     print(chopped)
     
     #return user_input_processed
     return chopped
+
+
+def nlp_testing_2(file):
+    text_raw = file.user_input
+    print(text_raw)
+    file.text_segmented = nltk.sent_tokenize(text_raw)
+
+    return file.text_segmented
