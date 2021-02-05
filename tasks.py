@@ -1,10 +1,7 @@
 import os
 import requests
-
 from app import Processing
-#from nltk import sent_tokenize, pos_tag
 import nltk
-
 from moviepy.editor import *
 from pexels_api import API
 from pathlib import Path
@@ -26,6 +23,11 @@ FONT_COLOUR = "green"
 PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
+
+styles = {"neutral": {"music": "neutral.mp3"},
+          "promo": {"music": "promo.mp3"},
+          "emotional": {"music": "emotional.mp3"}
+          }
 
 source = ["A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so.",
             "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by a",
@@ -63,6 +65,7 @@ api = API(PEXELS_API_KEY)
 
 def addOne(n):
     return n + 1
+
 
 def dl_img(url, filename):
     print(filename)
@@ -171,7 +174,7 @@ def nlp_testing_2(file):
     text_raw = file.user_input
     print(text_raw)
     file.text_segmented = nltk.sent_tokenize(text_raw)
-    for i in range (0, len(file.text_segmented)):
+    for i in range(0, len(file.text_segmented)):
         n = 0
         for c in file.text_segmented[i]:
             n +=1
@@ -186,8 +189,8 @@ def nlp_testing_2(file):
                 print(f"found word {p} and put it to the searchwords")
                 file.text_searchwords[i].append(p[0])
                 file
-        for i in file.text_searchwords:
-            if i == []:
-                i.append("error")
+        for x in file.text_searchwords:
+            if x == []:
+                x.append("error")
                 print("appended error")
     return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing} \nsearchwords: {file.text_searchwords}"
