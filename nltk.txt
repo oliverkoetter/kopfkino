@@ -1,5 +1,1 @@
 taggers
-stemmers
-tokenizers
-chunkers
-models
