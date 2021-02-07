@@ -1,27 +1,17 @@
 import os
 from flask import Flask, request, send_from_directory, abort, jsonify
-import datetime
 import time
 import requests
 from pexels_api import API
 import redis
 from rq import Queue
-
 # import pyttsx3
+#import datetime
 
 app = Flask(__name__)
 redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
 r = redis.from_url(redis_url)
-
-#r = (os.environ.get("REDIS_URL"))
-#r = redis.Redis()
 q = Queue(connection=r)
-
-'''
-print(app.config('FLASK_ENV'))
-print(os.getenv('PEXELS_API_KEY'))
-print(os.getenv('REDISTOGO_URL'))
-'''
 
 class Processing:
     def __init__(self, user_input, style, voiceover):
@@ -66,7 +56,7 @@ def upload(filename):
 
 
 
-@app.route("/redis/", methods=["POST"])
+@app.route("/create/", methods=["POST"])
 def kopfkino_enqueue_job():
     content = request.get_json()
     job = q.enqueue(create_kopfkino, content)
@@ -84,7 +74,7 @@ def get_final_video(video_id):
     elif job.id in q.failed_job_registry:
         return "There is a problem with the processing, please try again!", 500
     else:
-        return "Problem, file (not yet) created", 404
+        return "Please wait, file (not yet) created", 404
 
 @app.route("/nlp/", methods=["GET", "POST"])
 def nlp_2():
@@ -101,33 +91,3 @@ def nlp_2():
 
 if __name__ == "__main__":
     app.run(threaded=True)
-'''
-@app.route("/create/", methods=["POST"])
-def create_by_header():
-    print(request.is_json)
-    content = request.get_json()
-    print(content)
-    data = [content.get("user_input")]
-    print(data)
-
-    # creating instance of class Processing which bundles all data and pipeline phases
-    file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
-
-    file.text_searchwords = [content.get("user_input")]
-    file.downloaded_items = pexels_fetch(file.text_searchwords)
-
-    for i in range(0, len(file.downloaded_items)):
-        file.footage.append(zoom(file.downloaded_items[i], file.timing[i]))
-
-    for i in range(0, len(file.downloaded_items)):
-        clip = overlay_text(file.user_input, file.timing[i])
-        combined = CompositeVideoClip([file.footage[i], clip])
-        file.footage_and_text.append(combined)
-
-    file.export_file = concatenate(file.footage_and_text)
-    file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
-    file.export_file.write_videofile(os.path.join(OUTPUT, file.export_filename), codec='libx264', audio_codec='aac',
-                                     fps=24)
-
-    return send_from_directory(directory=OUTPUT, filename=file.export_filename, as_attachment=True), 201
-'''

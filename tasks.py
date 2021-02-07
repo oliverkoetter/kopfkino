@@ -162,14 +162,6 @@ def create_kopfkino(content):
     return result
 
 
-def nlp_testing(text):
-    chopped = nltk.sent_tokenize(text)
-    print(chopped)
-    
-    #return user_input_processed
-    return chopped
-
-
 def nlp_testing_2(file):
     text_raw = file.user_input
     print(text_raw)
@@ -184,13 +176,11 @@ def nlp_testing_2(file):
         file.text_searchwords.append([])
         print(nltk.pos_tag(text_segmented_to_words))
         for p in nltk.pos_tag(text_segmented_to_words):
-            #{"VBP", "JJ", "NN", "NNS", "NNP", "NNPS", "VB"}
             if p[1] in { "JJ", "NN", "NNS", "VB"}:
                 print(f"found word {p} and put it to the searchwords")
                 file.text_searchwords[i].append(p[0])
-                file
         for x in file.text_searchwords:
             if x == []:
                 x.append("error")
-                print("appended error")
+                print("No searchword left: appended error")
     return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing} \nsearchwords: {file.text_searchwords}"
