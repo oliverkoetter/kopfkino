@@ -24,9 +24,12 @@ PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
 
-styles = {"neutral": {"music": "neutral.mp3"},
-          "promo": {"music": "promo.mp3"},
-          "emotional": {"music": "emotional.mp3"}
+audio_dir = "static/music/emotional.mp3"
+audio_emotional = AudioFileClip(audio_dir, fps=44100)
+
+styles = {"neutral": {"music": str(os.path.join(audio_dir, "neutral.mp3"))},
+          "promo": {"music": str(os.path.join(audio_dir, "promo.mp3"))},
+          "emotional": {"music": str(os.path.join(audio_dir, "emotional.mp3"))}
           }
 
 source = ["A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so.",
@@ -48,14 +51,13 @@ BASE_DIR = os.path.dirname(ABS_PATH)  # "/"
 
 Path(os.path.join(BASE_DIR, "uploads", suffix)).mkdir(parents=True, exist_ok=True)
 INPUT = os.path.join(BASE_DIR, "uploads", suffix)
+
 Path(os.path.join(BASE_DIR, "downloads", suffix)).mkdir(parents=True, exist_ok=True)
-#OUTPUT = os.path.join(BASE_DIR, "downloads", suffix)
 OUTPUT = os.path.join(BASE_DIR, "downloads")
 
 OUTPUT_NAME = "Kopfkino"
 
-audio_dir = "static/music/emotional.mp3"
-audio_emotional = AudioFileClip(audio_dir, fps=44100)
+
 
 
 # API setups

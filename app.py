@@ -13,6 +13,7 @@ redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
 r = redis.from_url(redis_url)
 q = Queue(connection=r)
 
+
 class Processing:
     def __init__(self, user_input, style, voiceover):
         self.user_input = user_input
@@ -20,7 +21,6 @@ class Processing:
         self.voiceover = voiceover
         self.export_filename = f"Kopfkino_export_{666}.mp4"
         self.export_file = None
-        self.text_segmented = []
         self.text_segmented = []
         self.text_timing = []
         self.text_overlays = []
@@ -35,7 +35,7 @@ from tasks import *
 # available flask routes:
 @app.route("/")
 def hello_world():
-    return "Hello IndexMindex!"
+    return "Hello there!"
 
 @app.route('/dl/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
@@ -53,8 +53,6 @@ def upload(filename):
 
     # Return 201 CREATED
     return f"Die Datei {filename} wurde erstellt!", 201
-
-
 
 @app.route("/create/", methods=["POST"])
 def kopfkino_enqueue_job():

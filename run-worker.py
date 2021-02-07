@@ -5,8 +5,6 @@ from rq import Worker, Queue, Connection
 listen = ['high', 'default', 'low']
 
 redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
-print(f"set Redis worker instance to {os.getenv('REDISTOGO_URL')}")
-
 conn = redis.from_url(redis_url)
 
 if __name__ == '__main__':
