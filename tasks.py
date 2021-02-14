@@ -6,7 +6,7 @@ from moviepy.editor import *
 from pexels_api import API
 from pathlib import Path
 import time
-import datetime
+#import datetime
 
 
 # configurations of paths, output URL, file structure
@@ -45,19 +45,12 @@ source = ["A wonderful serenity has taken possession of my entire soul, like the
 
 example = source[len(source)-1]
 
-suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
+#suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
 ABS_PATH = os.path.abspath(__file__)  # "/app.py"
 BASE_DIR = os.path.dirname(ABS_PATH)  # "/"
 
-Path(os.path.join(BASE_DIR, "uploads", suffix)).mkdir(parents=True, exist_ok=True)
-INPUT = os.path.join(BASE_DIR, "uploads", suffix)
-
-Path(os.path.join(BASE_DIR, "downloads", suffix)).mkdir(parents=True, exist_ok=True)
+Path(os.path.join(BASE_DIR, "downloads")).mkdir(parents=True, exist_ok=True)
 OUTPUT = os.path.join(BASE_DIR, "downloads")
-
-OUTPUT_NAME = "Kopfkino"
-
-
 
 
 # API setups

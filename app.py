@@ -33,6 +33,8 @@ class Processing:
 from tasks import *
 
 # available flask routes:
+
+
 @app.route("/")
 def hello_world():
     return "Hello there!"
@@ -49,7 +51,7 @@ def upload(filename):
         abort(400, "no subdirectories allowed")
 
     with open(os.path.join(INPUT, filename), "wb") as fp:
-            fp.write(request.data)
+        fp.write(request.data)
 
     # Return 201 CREATED
     return f"Die Datei {filename} wurde erstellt!", 201
