@@ -5,7 +5,6 @@ import requests
 from pexels_api import API
 import redis
 from rq import Queue
-# import pyttsx3
 #import datetime
 
 app = Flask(__name__)

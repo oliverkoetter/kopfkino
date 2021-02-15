@@ -6,6 +6,7 @@ from moviepy.editor import *
 from pexels_api import API
 from pathlib import Path
 import time
+import pyttsx3
 #import datetime
 
 
@@ -17,9 +18,9 @@ HEIGHT_OUT = 960/2
 screensize = (WIDTH_OUT, HEIGHT_OUT)
 
 FONT = "Helvetica-Bold"
-FONTSIZE_MAIN = WIDTH_OUT * 0.05
+FONTSIZE_MAIN = WIDTH_OUT * 0.1
 FONTSIZE_SUB = WIDTH_OUT * 0.03
-FONT_COLOUR = "green"
+FONT_COLOUR = "black"
 PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
@@ -58,6 +59,8 @@ PEXELS_API_KEY = os.getenv("PEXELS_API_KEY")
 api = API(PEXELS_API_KEY)
 
 
+
+
 def addOne(n):
     return n + 1
 
@@ -90,7 +93,7 @@ def zoom(file, t):
     f = (ImageClip(file)
          .resize(height=screensize[1])
          .resize(lambda t: 1 + 0.02 * t)
-         .set_position(('center', 'center'))
+#         .set_position(('center', 'center'))
          .set_duration(t)
          )
     f = resize_to_ouput_size(f)
@@ -107,26 +110,47 @@ def resize_to_ouput_size(f):
     return f
 
 
+def voiceover(textSnippet, i):
+    #textSnippet = str(textSnippet)
+
+    # pyttsx3 setup
+    engine = pyttsx3.init()
+    print(f"inside voiceover func, processing: {textSnippet} \nIsBusy is set to {engine.isBusy()}")
+    audioFileName = f"voiceover text segment no. {i}.mp3"
+    engine.save_to_file(textSnippet, audioFileName)
+    engine.runAndWait()
+#    engine.stop()
+    print(f"text to speech worked correctly? \nisBusy is set to {engine.isBusy()}")
+
+    return audioFileName
+
 def overlay_text(file, i):
     overlay = TextClip(file.text_segmented[i],
                        size=(WIDTH_OUT * 0.9, HEIGHT_OUT),
                        color=FONT_COLOUR,
                        method="caption",
-                       align="center",
+                       align="East",
                        fontsize=FONTSIZE_MAIN,
+                       font=FONT
                        )
     combined = CompositeVideoClip([overlay, overlayAttribution(file.downloaded_items[i][1])])
+
+    if file.voiceover == True or file.voiceover == "true" or file.voiceover == "True":
+        audio_clip_temp = AudioFileClip(voiceover(file.text_segmented[i], i), fps=44100)
+        combined = combined.set_audio(audio_clip_temp)
+
     combined = combined.set_duration(file.text_timing[i])
+
     return combined
 
 def overlayAttribution(text):
-    attribution = TextClip(text,
-                           size=(WIDTH_OUT, FONTSIZE_SUB),
+    attribution = TextClip(f"Image from www.pexels.com by: {text}",
+                           size=(WIDTH_OUT, HEIGHT_OUT * 0.95),
                            color=FONT_COLOUR,
                            fontsize=(FONTSIZE_SUB),
-                           align="center",
+                           align="south",
                            method="caption",
-#                           font="Helvetica"
+                           font=FONT
                            )
     attribution = attribution.set_position((0, 0.95), relative=True)
     return attribution
@@ -134,6 +158,9 @@ def overlayAttribution(text):
 
 def create_kopfkino(content):
     file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
+
+    print(f"voiceover from content JSON is set to: {file.voiceover}")
+
     nlp_testing_2(file)
     
     nlp_testing_2(file)
@@ -146,11 +173,20 @@ def create_kopfkino(content):
     for i in range(0, len(file.text_segmented)):
         clip = overlay_text(file, i)
         combined = CompositeVideoClip([file.footage[i], clip])
+
+#        new_audioclip =  CompositeAudioClip([clip.audio, combined.audio])
+#        combined = combined.set_audio(new_audioclip)
+
         file.footage_and_text.append(combined)
 
     file.export_file = concatenate(file.footage_and_text)
     file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
-    file.export_file.write_videofile(os.path.join(OUTPUT, f"Kopfkino_export_in workerinstance.mp4"), codec='libx264', audio_codec='aac', fps=24)
+
+    #mixed_audio = CompositeAudioClip([file.export_file.audio, audio_emotional])
+    #file.export_file = file.export_file.set_audio(mixed_audio)
+
+    file.export_file.write_videofile(os.path.join(OUTPUT, f"Kopfkino_export_in workerinstance.mp4"), codec='libx264',
+                                     audio_codec='aac', fps=24)
     with open(os.path.join(OUTPUT, f"Kopfkino_export_in workerinstance.mp4"), "rb") as trans:
         result = trans.read()
 
@@ -174,8 +210,10 @@ def nlp_testing_2(file):
             if p[1] in { "JJ", "NN", "NNS", "VB"}:
                 print(f"found word {p} and put it to the searchwords")
                 file.text_searchwords[i].append(p[0])
-        for x in file.text_searchwords:
-            if x == []:
-                x.append("error")
-                print("No searchword left: appended error")
+
+    for x in file.text_searchwords:
+        if len(x) == 0 :
+            x.append("error")
+            print("-------> ERROR HANDLING NEEDED: No searchword left: appended error")
+
     return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing} \nsearchwords: {file.text_searchwords}"
