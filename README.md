@@ -27,7 +27,7 @@ https://kopfkino-app.herokuapp.com/create/
 This route is designed to accept a POST request and a JSON string indicating the three user parameters (user text input, style, voiceover) in the following manner.
 ```
 {
-    "user_input": "Text",
+    "user_input": "Text up to 250 characters...",
     "style": "neutral OR emotional OR promo",
     "voiceover" : "True OR False"
 }
@@ -39,5 +39,6 @@ https://kopfkino-app.herokuapp.com/nlp/
 This route is also designed to accept a POST request and its purpose is to test the natural language processing in place. The response is the segmented input text.
  
 ## Maintainers
+If you have any questions or remarks, feel free get in touch.
 oliverkoetter (owner)
 
