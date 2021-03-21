@@ -4,6 +4,11 @@ This project is the back-end for the KopfKino app, tailored for easy setup on a 
 
 ## Installation locally
 Make sure all Python dependencies listed in the requirements.txt file are installed via pip. Furthermore ensure that [ImageMagick](https://imagemagick.org/) and [Ghostscript](https://www.ghostscript.com/) are installed for text processing and layout. For proper processing of the queued jobs and the elementary in-memory-database install [Redis](https://redis.io/).
+The following heroku-cli command interprets the Procfile locally and runs the respective processes.
+```
+heroku local
+```
+
 
 ## Installation on heroku
 All python dependencies are automatically setup via the requirements.txt. Additional buildpacks need to be added manually, the order is important: 
