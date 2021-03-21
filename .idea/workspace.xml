@@ -27,7 +27,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d91b5af-d31f-47ab-a7b0-e980c18932e3" name="Default Changelist" comment="readme.md fixes" />
+    <list default="true" id="5d91b5af-d31f-47ab-a7b0-e980c18932e3" name="Default Changelist" comment="readme.md fixes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
