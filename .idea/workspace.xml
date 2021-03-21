@@ -27,7 +27,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d91b5af-d31f-47ab-a7b0-e980c18932e3" name="Default Changelist" comment="NLTK fixes" />
+    <list default="true" id="5d91b5af-d31f-47ab-a7b0-e980c18932e3" name="Default Changelist" comment="readme.md fixes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -281,7 +281,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612484329133</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="readme.md fixes">
+      <created>1616350372294</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1616350372294</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -304,7 +311,8 @@
     <MESSAGE value="implemented RQ with REDISTOGO as backgroundworker" />
     <MESSAGE value="RQ fixes" />
     <MESSAGE value="NLTK fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="NLTK fixes" />
+    <MESSAGE value="readme.md fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="readme.md fixes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="611" y="401" key="#Notifications" timestamp="1612542595486">
