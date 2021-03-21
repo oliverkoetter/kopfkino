@@ -90,6 +90,8 @@ def resize_to_ouput_size(f):
     f = f.crop(x_center=f.w / 2, y_center=f.h / 2, width=WIDTH_OUT, height=HEIGHT_OUT)
     return f
 
+'''
+# voiceover functionality deprecated due to non-existent espeak support on heroku
 
 def voiceover(textSnippet, i):
     engine = pyttsx3.init()
@@ -101,7 +103,7 @@ def voiceover(textSnippet, i):
     print(f"text to speech worked correctly? \nisBusy is set to {engine.isBusy()}")
 
     return audioFileName
-
+'''
 
 def overlay_text(file, i):
     overlay = TextClip(file.text_segmented[i],
@@ -114,9 +116,10 @@ def overlay_text(file, i):
                        )
     combined = CompositeVideoClip([overlay, overlayAttribution(file.downloaded_items[i][1])])
 
-    if file.voiceover == True or file.voiceover == "true" or file.voiceover == "True":
-        audio_clip_temp = AudioFileClip(voiceover(file.text_segmented[i], i), fps=44100)
-        combined = combined.set_audio(audio_clip_temp)
+# voiceover functionality deprecated
+#    if file.voiceover == True or file.voiceover == "true" or file.voiceover == "True":
+#        audio_clip_temp = AudioFileClip(voiceover(file.text_segmented[i], i), fps=44100)
+#        combined = combined.set_audio(audio_clip_temp)
 
     combined = combined.set_duration(file.text_timing[i])
 
