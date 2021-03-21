@@ -141,11 +141,7 @@ def overlayAttribution(text):
 
 def create_kopfkino(content):
     file = Processing(user_input=content.get("user_input"), style=content.get("style"), voiceover=content.get("voiceover"))
-
     print(f"voiceover from content JSON is set to: {file.voiceover}")
-
-    nlp_testing_2(file)
-    
     nlp_testing_2(file)
     print(file.downloaded_items)
     print(file.text_searchwords)
@@ -190,6 +186,6 @@ def nlp_testing_2(file):
     for x in file.text_searchwords:
         if len(x) == 0:
             x.append("error")
-            print("-------> ERROR HANDLING NEEDED: No searchword left: appended error")
+            print("-------> ERROR HANDLING NEEDED: No searchword left: appended full sentence OR error")
 
     return f"\nsegmented: {file.text_segmented}, \ntimings: {file.text_timing} \nsearchwords: {file.text_searchwords}"
