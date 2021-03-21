@@ -24,7 +24,14 @@ The microframework used to design this RESTful API is the Flask framework. The a
 ### /create/
 https://kopfkino-app.herokuapp.com/create/
 
-This route is designed to accept a POST request and a JSON string indicating the three user parameters (user text input, style, voiceover).
+This route is designed to accept a POST request and a JSON string indicating the three user parameters (user text input, style, voiceover) in the following manner.
+```
+{
+    "user_input": "Text",
+    "style": "neutral OR emotional OR promo",
+    "voiceover" : "True OR False"
+}
+```
 
 ### /nlp/
 https://kopfkino-app.herokuapp.com/nlp/
