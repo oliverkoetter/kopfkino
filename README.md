@@ -21,7 +21,7 @@ https://kopfkino-app.herokuapp.com/create/
 
 This route is designed to accept a POST request and a JSON string indicating the three user parameters (user text input, style, voiceover).
 
-###/nlp/
+### /nlp/
 https://kopfkino-app.herokuapp.com/nlp/
 
 This route is also designed to accept a POST request and its purpose is to test the natural language processing in place. The response is the segmented input text.
