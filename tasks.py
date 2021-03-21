@@ -7,12 +7,13 @@ from pexels_api import API
 from pathlib import Path
 import time
 import pyttsx3
-#import datetime
 
 
 # configurations of paths, output URL, file structure
 # 16:9 ratios possible for upright smartphone usage
-# 540, 960 creates 1/4 data size compared to FullHD
+# 1080, 1920 --> FullHD resolution
+# 540, 960 --> 1/4 data size compared to FullHD
+# 270, 480 --> 1/8 data size compared to FullHD
 WIDTH_OUT = 540/2
 HEIGHT_OUT = 960/2
 screensize = (WIDTH_OUT, HEIGHT_OUT)

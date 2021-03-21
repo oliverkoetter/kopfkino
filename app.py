@@ -5,7 +5,7 @@ import requests
 from pexels_api import API
 import redis
 from rq import Queue
-#import datetime
+
 
 app = Flask(__name__)
 redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
@@ -32,8 +32,6 @@ class Processing:
 from tasks import *
 
 # available flask routes:
-
-
 @app.route("/")
 def hello_world():
     return "Hello there!"
