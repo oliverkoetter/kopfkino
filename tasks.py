@@ -91,6 +91,7 @@ def resize_to_ouput_size(f):
     f = f.crop(x_center=f.w / 2, y_center=f.h / 2, width=WIDTH_OUT, height=HEIGHT_OUT)
     return f
 
+
 '''
 # voiceover functionality deprecated due to non-existent espeak support on heroku
 
@@ -106,6 +107,7 @@ def voiceover(textSnippet, i):
     return audioFileName
 '''
 
+
 def overlay_text(file, i):
     overlay = TextClip(file.text_segmented[i],
                        size=(WIDTH_OUT * 0.9, HEIGHT_OUT),
@@ -115,7 +117,7 @@ def overlay_text(file, i):
                        fontsize=FONTSIZE_MAIN,
                        font=FONT
                        )
-    combined = CompositeVideoClip([overlay, overlayAttribution(file.downloaded_items[i][1])])
+    combined = CompositeVideoClip([overlay, overlay_attribution(file.downloaded_items[i][1])])
 
 # voiceover functionality deprecated
 #    if file.voiceover == True or file.voiceover == "true" or file.voiceover == "True":
@@ -127,16 +129,16 @@ def overlay_text(file, i):
     return combined
 
 
-def overlayAttribution(text):
+def overlay_attribution(text):
     attribution = TextClip(f"Image from www.pexels.com by: {text}",
                            size=(WIDTH_OUT, HEIGHT_OUT * 0.95),
                            color=FONT_COLOUR,
-                           fontsize=(FONTSIZE_SUB),
+                           fontsize=FONTSIZE_SUB,
                            align="south",
                            method="caption",
                            font=FONT
                            )
-    attribution = attribution.set_position((0, 0.95), relative=True)
+    attribution = attribution.set_position((0, 0.97), relative=True)
     return attribution
 
 
