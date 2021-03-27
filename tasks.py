@@ -26,13 +26,14 @@ PADDING = WIDTH_OUT * 0.1
 
 readingSpeed = 0.2
 
-audio_dir = "static/music/emotional.mp3"
-audio_emotional = AudioFileClip(audio_dir, fps=44100)
+audio_dir_emotional = "static/music/emotional.mp3"
+audio_dir_promo = "static/music/promo.mp3"
+audio_dir_neutral = "static/music/neutral.mp3"
 
-styles = {"neutral": {"music": str(os.path.join(audio_dir, "neutral.mp3"))},
-          "promo": {"music": str(os.path.join(audio_dir, "promo.mp3"))},
-          "emotional": {"music": str(os.path.join(audio_dir, "emotional.mp3"))}
-          }
+audio_emotional = AudioFileClip(audio_dir_emotional, fps=44100)
+audio_neutral = AudioFileClip(audio_dir_neutral, fps=44100)
+audio_promo = AudioFileClip(audio_dir_promo, fps=44100)
+
 
 ABS_PATH = os.path.abspath(__file__)  # "/app.py"
 BASE_DIR = os.path.dirname(ABS_PATH)  # "/"
@@ -155,7 +156,15 @@ def create_kopfkino(content):
         file.footage_and_text.append(combined)
 
     file.export_file = concatenate(file.footage_and_text)
-    file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
+
+    if file.style == "neutral":
+        file.export_file = file.export_file.set_audio(audio_neutral.set_duration(file.export_file.duration))
+    elif file.style == "emotional":
+        file.export_file = file.export_file.set_audio(audio_emotional.set_duration(file.export_file.duration))
+    elif file.style == "promo":
+        file.export_file = file.export_file.set_audio(audio_promo.set_duration(file.export_file.duration))
+    else:
+        file.export_file = file.export_file.set_audio(audio_neutral.set_duration(file.export_file.duration))
 
     file.export_file.write_videofile(os.path.join(OUTPUT, f"Kopfkino_export_in workerinstance.mp4"), codec='libx264',
                                      audio_codec='aac', fps=24)
@@ -174,10 +183,12 @@ def nlp_testing_2(file):
         for c in file.text_segmented[i]:
             n += 1
         n = round(n * readingSpeed, 1)
+        if n < 5:
+            n = 5
         file.text_timing.append(n)
         text_segmented_to_words = nltk.word_tokenize(file.text_segmented[i])
         file.text_searchwords.append([])
-        print(nltk.pos_tag(text_segmented_to_words))
+        print(f"POS Tags{nltk.pos_tag(text_segmented_to_words)}")
         for p in nltk.pos_tag(text_segmented_to_words):
             if p[1] in {"JJ", "NN", "NNS", "VB"}:
                 print(f"found word {p} and put it to the searchwords")

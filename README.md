@@ -4,7 +4,7 @@ This project is the back-end for the KopfKino app, tailored for easy setup on a 
 
 ## Installation locally
 Make sure all Python dependencies listed in the requirements.txt file are installed via pip. Furthermore ensure that [ImageMagick](https://imagemagick.org/) and [Ghostscript](https://www.ghostscript.com/) are installed for text processing and layout. For proper processing of the queued jobs and the elementary in-memory-database install [Redis](https://redis.io/).
-The following heroku-cli command interprets the Procfile locally and runs the respective processes.
+The following heroku-cli command interprets the Procfile locally and runs the respective processes. The app & worker process are compiled to their own slug and executed in their own dyno (heroku containerization).
 ```
 heroku local
 ```
@@ -20,7 +20,9 @@ heroku buildpacks:add heroku/python
 The redis server needs to be implemented via the heroku [Redis addon](https://elements.heroku.com/addons/heroku-redis).
 
 ## API guide
-The microframework used to design this RESTful API is the Flask framework. The available routes on this project are:
+The current API for imagery retrieval is the [Pexels API for Python](https://pypi.org/project/pexels-api/). A registration is needed in order to get an API key. There is no limit on API requests.
+
+The microframework used to design this RESTful API back-end is the [Flask](https://flask.palletsprojects.com/en/1.1.x/) framework. The available routes on this project are:
 ### /create/
 https://kopfkino-app.herokuapp.com/create/
 
